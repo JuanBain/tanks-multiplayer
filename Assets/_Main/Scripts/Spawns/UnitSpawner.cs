@@ -17,7 +17,7 @@ public class UnitSpawner : NetworkBehaviour,IPointerClickHandler
     [Command]
     private void CmdSpawnUnit()
     {
-        Debug.Log("CmdSpawnUnit");
+      
         GameObject unitInstance = Instantiate(
             unitPrefab, 
             unitSpawnPoint.position,
@@ -33,7 +33,7 @@ public class UnitSpawner : NetworkBehaviour,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnPointerClick");
+      
         if (eventData.button != PointerEventData.InputButton.Left) { return; }
         if (!hasAuthority) { return; }
         CmdSpawnUnit();
