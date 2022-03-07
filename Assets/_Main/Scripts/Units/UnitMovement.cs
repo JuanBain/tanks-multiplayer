@@ -7,7 +7,7 @@ using Mirror;
 
 public class UnitMovement : NetworkBehaviour
 {
-   [SerializeField] private NavMeshAgent agent = null;
+    [SerializeField] private NavMeshAgent agent = null;
 
     #region Server
 
@@ -16,7 +16,7 @@ public class UnitMovement : NetworkBehaviour
     {
         Debug.Log("CmdMove");
         if (!NavMesh.SamplePosition(position, out NavMeshHit hit, 1f, NavMesh.AllAreas)) { return; }
-       
+
         agent.SetDestination(hit.position);
     }
 

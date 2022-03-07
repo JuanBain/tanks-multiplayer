@@ -8,7 +8,7 @@ public class UnitCommandGiver : MonoBehaviour
     [SerializeField] private UnitselectionHandler unitselectionHandler = null;
 
     private Camera mainCamera;
-    [SerializeField]private LayerMask layerMask=new LayerMask();
+    [SerializeField] private LayerMask layerMask = new LayerMask();
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class UnitCommandGiver : MonoBehaviour
     {
         if (!Input.GetMouseButtonDown(1)) { return; }
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if(!Physics.Raycast(ray,out RaycastHit hit, Mathf.Infinity, layerMask)) { return; }
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) { return; }
         TryMove(hit.point);
 
     }
