@@ -21,11 +21,11 @@ public class UnitselectionHandler : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        
+
     }
     private void Update()
     {
-        if (player == null && NetworkClient.connection!=null)
+        if (player == null && NetworkClient.connection != null)
         {
             player = NetworkClient.connection.identity.GetComponent<iBainPlayer>();
         }
@@ -48,11 +48,15 @@ public class UnitselectionHandler : MonoBehaviour
 
     private void StartSelecionArea()
     {
-        foreach (Unit selectedUnit in SelectedUnits)
+        if (!Input.GetKey(KeyCode.LeftShift)) 
         {
-            selectedUnit.Deselect();
+            foreach (Unit selectedUnit in SelectedUnits)
+            {
+                selectedUnit.Deselect();
+            }
+
+            SelectedUnits.Clear();
         }
-        SelectedUnits.Clear();
 
         unitSelectionArea.gameObject.SetActive(true);
 
@@ -99,10 +103,11 @@ public class UnitselectionHandler : MonoBehaviour
 
         foreach (Unit unit in player.GetMyUnits())
         {
+            if (SelectedUnits.Contains(unit)) { continue; }
             Vector3 screenPosition = mainCamera.WorldToScreenPoint(unit.transform.position);
-            if(screenPosition.x>min.x && 
-                screenPosition.x<max.x &&
-                screenPosition.y>min.y && 
+            if (screenPosition.x > min.x &&
+                screenPosition.x < max.x &&
+                screenPosition.y > min.y &&
                 screenPosition.y < max.y)
             {
                 SelectedUnits.Add(unit);
