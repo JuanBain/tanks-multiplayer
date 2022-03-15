@@ -22,7 +22,18 @@ public class UnitselectionHandler : MonoBehaviour
     {
         mainCamera = Camera.main;
 
+        Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+
+        GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
+        GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
     }
+
+    private void OnDestroy()
+    {
+        Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+        GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
+    }
+
     private void Update()
     {
         if (player == null && NetworkClient.connection != null)
@@ -115,5 +126,15 @@ public class UnitselectionHandler : MonoBehaviour
             }
         }
 
+    }
+
+    private void AuthorityHandleUnitDespawned(Unit unit)
+    {
+        SelectedUnits.Remove(unit);
+    }
+
+    private void ClientHandleGameOver(string winnerName)
+    {
+        enabled = false;
     }
 }

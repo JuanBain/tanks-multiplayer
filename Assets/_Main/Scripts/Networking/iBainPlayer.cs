@@ -7,8 +7,9 @@ using System;
 public class iBainPlayer : NetworkBehaviour
 {
     [SerializeField] private List<Unit> myUnits = new List<Unit>();
-    public List<Unit> GetMyUnits() {
-        return myUnits; 
+    public List<Unit> GetMyUnits()
+    {
+        return myUnits;
     }
     #region Server
     public override void OnStartServer()
@@ -25,40 +26,41 @@ public class iBainPlayer : NetworkBehaviour
     private void ServerHandleUnitSpawned(Unit unit)
     {
         if (unit.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
+
         myUnits.Add(unit);
     }
     private void ServerHandleUnitDespawned(Unit unit)
     {
         if (unit.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
+
         myUnits.Remove(unit);
     }
     #endregion
 
+
     #region Client
 
-    public override void OnStartClient()
+    public override void OnStartAuthority()
     {
-        if (!isClientOnly) { return; }
+        if (!NetworkServer.active) { return; }
         Unit.AuthorityOnUnitSpawned += AuthorityHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
     }
 
     public override void OnStopClient()
     {
-        if (!isClientOnly) { return; }
+        if (!isClientOnly || !hasAuthority) { return; }
         Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
     }
 
     private void AuthorityHandleUnitDespawned(Unit unit)
     {
-        if (!hasAuthority) { return; }
         myUnits.Add(unit);
     }
 
     private void AuthorityHandleUnitSpawned(Unit unit)
     {
-        if (!hasAuthority) { return; }
         myUnits.Remove(unit);
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Mirror;
-
+using System;
 
 public class UnitMovement : NetworkBehaviour
 {
@@ -14,6 +14,22 @@ public class UnitMovement : NetworkBehaviour
     [SerializeField] private float chaseRange = 10f;
 
     #region Server
+
+    public override void OnStartServer()
+    {
+        GameOverHandler.ServerOnGameOver += ServerHandleGameOver;
+    }
+
+    public override void OnStopServer()
+    {
+        GameOverHandler.ServerOnGameOver -= ServerHandleGameOver;
+    }
+
+    [Server]
+    private void ServerHandleGameOver()
+    {
+        agent.ResetPath();
+    }
 
     [ServerCallback]
     private void Update()
